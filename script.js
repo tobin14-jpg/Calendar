@@ -12,41 +12,53 @@ const workHours = [
   "5 PM",
   "6 PM",
 ];
-const militaryHours = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18]; 
+
 const currentHour = moment().hour();
 
 // Updating header to reflect current day
 $("#currentDay").text(today.format("MMM Do, YYYY"));
 
-// Creating rows for each array element
-for (i = 0; i < workHours.length; i++) {
-    let row = $('.row');
-    let timeHour = $('.hour col-1').text(workHours[i]);
-    let timeBlock = $('.type-block col-10').attr("id", i);
 
-// if else statement for setting past, present & future
-    if (currentHour === militaryHours[i]) {
-        timeBlock.addClass("Present");
-    } else if (currentHour > militaryHours[i]) {
-        timeBlock.addClass("Future");
-    } else (currentHour < militaryHours[i]) 
-        timeBlock.addClass("Past");
-    
+$(".save-Btn").on("click", function () {
+    // Get description values
+    var text = $(this).siblings(".type-block").val();
+    var time = $(this).parent().attr("id");
 
-    let saveIcon = $('.save-Btn col-1');
-    let saveBtn = $('.fa-solid fa-floppy-disk').attr(".data-id", i).append(saveIcon);
+    // Save text in local storage
+    localStorage.setItem(time, text);
+})
 
-    row.append(row, timeHour, timeBlock, saveBtn);
-    
-    // Append elements of the rows to the page
-    $(".container").append(row);
+function timeTracker() {
+    //get current number of hours.
+    var timeNow = moment().hour();
 
+    // loop over time blocks
+    $(".type-block").each(function () {
+        var blockTime = parseInt($(this).attr("id").split("hour")[1]);
+
+        // Check time and add/remove classes for background colour
+        if (blockTime < timeNow) {
+            $(this).removeClass("Future");
+            $(this).removeClass("Present");
+            $(this).addClass("Past");
+        }
+        else if (blockTime === timeNow) {
+            $(this).removeClass("Past");
+            $(this).removeClass("Future");
+            $(this).addClass("Present");
+        }
+        else {
+            $(this).removeClass("Present");
+            $(this).removeClass("Past");
+            $(this).addClass("Future");
+
+        }
+    })
 }
-
 
 $(".save-Btn").on("click", function () {
     let buttonId = $(this).attr("data-id");
-    let event = $("type-block" + buttonId).val();
+    let event = $('#type-block' + buttonId).val();
     let taskObj = JSON.parse(localStorage.getItem("task")) || [];
     taskObj.push({
       time: buttonId,
@@ -60,9 +72,21 @@ $(".save-Btn").on("click", function () {
   $(document).ready(function () {
     let savedTasks = JSON.parse(localStorage.getItem("task"));
     for (let i = 0; i < savedTasks.length; i++) {
-      //console.log(savedTasks[i].time);
+      
       let updatedHour = savedTasks[i].time;
       let updatedText = savedTasks[i].description;
       $("#" + updatedHour).text(updatedText);
     }
   });
+
+  $("#type-block1 .description").val(localStorage.getItem("type-block1"));
+  $("#type-block2 .description").val(localStorage.getItem("type-block2"));
+  $("#type-block3 .description").val(localStorage.getItem("type-block3"));
+  $("#type-block4 .description").val(localStorage.getItem("type-block4"));
+  $("#type-block5 .description").val(localStorage.getItem("type-block5"));
+  $("#type-block6 .description").val(localStorage.getItem("type-block6"));
+  $("#type-block7 .description").val(localStorage.getItem("type-block7"));
+  $("#type-block8 .description").val(localStorage.getItem("type-block8"));
+  $("#type-block9 .description").val(localStorage.getItem("type-block9"));
+  
+  timeTracker();
