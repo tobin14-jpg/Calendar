@@ -42,7 +42,7 @@ function timeTracker() {
             $(this).removeClass("Present");
             $(this).addClass("Past");
         }
-        else if (blockTime === timeNow) {
+        else if (blockTime == timeNow) {
             $(this).removeClass("Past");
             $(this).removeClass("Future");
             $(this).addClass("Present");
@@ -51,8 +51,7 @@ function timeTracker() {
             $(this).removeClass("Present");
             $(this).removeClass("Past");
             $(this).addClass("Future");
-
-        }
+                   } console.log(blockTime);
     })
 }
 
@@ -90,3 +89,6 @@ $(".save-Btn").on("click", function () {
   $("#type-block9 .description").val(localStorage.getItem("type-block9"));
   
   timeTracker();
+
+  
+ 
