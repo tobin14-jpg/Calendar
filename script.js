@@ -34,7 +34,7 @@ function timeTracker() {
 
     // loop over time blocks
     $(".type-block").each(function () {
-        var blockTime = parseInt($(this).attr("id").split("hour")[1]);
+        var blockTime = parseInt($(this).attr("id").split("block")[1]);
 
         // Check time and add/remove classes for background colour
         if (blockTime < timeNow) {
